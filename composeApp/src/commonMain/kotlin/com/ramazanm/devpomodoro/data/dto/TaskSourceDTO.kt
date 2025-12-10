@@ -7,4 +7,5 @@ data class TaskSourceDTO(
     val sourceType: TaskSourceType,
     val connectionUrl: String?,
     val key: String?,
+    val readOnly: Boolean,
 )

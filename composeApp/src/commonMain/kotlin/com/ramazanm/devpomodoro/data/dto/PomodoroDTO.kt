@@ -2,7 +2,6 @@ package com.ramazanm.devpomodoro.data.dto
 
 data class PomodoroDTO(
     val id: Int,
-    val task: TaskDTO,
     val type: PomodoroType,
     val startTime: Long,
     val endTime: Long,
