@@ -1,9 +1,13 @@
-package com.ramazanm.devpomodoro.data.dto
+package com.ramazanm.devpomodoro.data.db.entity
 
-import com.ramazanm.devpomodoro.data.db.entity.TaskEntity
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import com.ramazanm.devpomodoro.data.dto.TaskDTO
+import com.ramazanm.devpomodoro.data.dto.TaskSourceType
 
-data class TaskDTO(
-    val id: Int,
+@Entity
+data class TaskEntity(
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val title: String,
     val description: String,
     val status: String,
@@ -12,7 +16,7 @@ data class TaskDTO(
     val endDate: Long,
     val priority: Int,
 ){
-    fun toEntity(): TaskEntity = TaskEntity(
+    fun toDTO(): TaskDTO = TaskDTO(
         id = id,
         title = title,
         description = description,
@@ -20,6 +24,6 @@ data class TaskDTO(
         source = source,
         startDate = startDate,
         endDate = endDate,
-        priority = priority,
+        priority = priority
     )
 }
