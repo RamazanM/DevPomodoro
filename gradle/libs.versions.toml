@@ -15,9 +15,14 @@ junit = "4.13.2"
 koinAndroid = "4.1.1"
 kotlin = "2.2.21"
 kotlinx-coroutines = "1.10.2"
+materialIconsExtended = "1.7.3"
 room = "2.8.4"
 sqlite = "2.6.2"
 ksp = "2.3.3"
+jetbrains-navigation = "2.8.0-alpha10"
+kotlinSerialization = "2.1.21"
+kotlinxSerializationCore = "1.8.1"
+
 
 [libraries]
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koinAndroid" }
@@ -40,6 +45,12 @@ androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 koin-compose-viewmodel = { group = "io.insert-koin", name = "koin-compose-viewmodel", version.ref = "koinAndroid" }
 
+androidx-navigation-compose = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "jetbrains-navigation" }
+
+kotlinx-serialization-core = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref = "kotlinxSerializationCore" }
+
+material-icons-extended = { module = "org.jetbrains.compose.material:material-icons-extended", version.ref = "materialIconsExtended" }
+
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
@@ -50,3 +61,4 @@ composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "k
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 androidx-room = { id = "androidx.room", version.ref = "room" }
+jetbrains-kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlinSerialization"}

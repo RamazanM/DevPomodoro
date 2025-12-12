@@ -1,5 +1,4 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
-import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
@@ -10,6 +9,8 @@ plugins {
     alias(libs.plugins.composeHotReload)
     alias(libs.plugins.ksp)
     alias(libs.plugins.androidx.room)
+    alias(libs.plugins.jetbrains.kotlin.serialization)
+
 }
 
 kotlin {
@@ -52,6 +53,8 @@ kotlin {
             implementation(libs.koin.android)
             implementation(libs.koin.androidx.compose)
             implementation(libs.androidx.room.runtime)
+            implementation("androidx.savedstate:savedstate-compose-android:1.4.0")
+
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -66,6 +69,9 @@ kotlin {
             implementation(libs.androidx.room.runtime)
             implementation(libs.androidx.sqlite.bundled)
             implementation(libs.koin.compose.viewmodel)
+            implementation(libs.androidx.navigation.compose)
+            implementation(libs.kotlinx.serialization.core)
+            implementation(libs.material.icons.extended)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -75,9 +81,22 @@ kotlin {
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinx.coroutinesSwing)
             implementation(libs.androidx.room.runtime)
+            implementation("androidx.savedstate:savedstate-compose-jvmstubs:1.3.1")
+
         }
         iosMain.dependencies {
             implementation(libs.androidx.room.runtime)
+
+        }
+        iosArm64Main.dependencies {
+            implementation("androidx.savedstate:savedstate-compose-iosarm64:1.4.0")
+
+        }
+        iosX64Main.dependencies {
+            implementation("androidx.savedstate:savedstate-compose-iosx64:1.4.0")
+        }
+        iosSimulatorArm64Main.dependencies {
+            implementation("androidx.savedstate:savedstate-compose-iossimulatorarm64:1.4.0")
         }
     }
 }

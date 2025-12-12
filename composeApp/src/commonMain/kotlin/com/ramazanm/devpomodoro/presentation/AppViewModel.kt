@@ -16,7 +16,7 @@ open class TaskListState {
     object Empty : TaskListState()
 }
 
-class TaskListViewModel(val repository: TaskRepository) : ViewModel() {
+class AppViewModel(val repository: TaskRepository) : ViewModel() {
     private val _taskListState = MutableStateFlow<TaskListState>(TaskListState.Loading)
     val taskListState: StateFlow<TaskListState> = _taskListState
 

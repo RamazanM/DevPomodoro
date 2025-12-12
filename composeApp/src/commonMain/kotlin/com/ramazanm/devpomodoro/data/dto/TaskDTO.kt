@@ -1,7 +1,9 @@
 package com.ramazanm.devpomodoro.data.dto
 
 import com.ramazanm.devpomodoro.data.db.entity.TaskEntity
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class TaskDTO(
     val id: Int,
     val title: String,
