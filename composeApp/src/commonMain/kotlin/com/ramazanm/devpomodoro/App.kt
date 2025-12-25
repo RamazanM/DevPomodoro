@@ -22,8 +22,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
@@ -32,11 +30,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.ramazanm.devpomodoro.data.dto.TaskDTO
 import com.ramazanm.devpomodoro.data.dto.taskDTONavTypeMapper
-import com.ramazanm.devpomodoro.presentation.TaskListViewModelImpl
 import com.ramazanm.devpomodoro.ui.AddEditTaskScreen
 import kotlinx.serialization.Serializable
 import org.jetbrains.compose.ui.tooling.preview.Preview
-import org.koin.compose.viewmodel.koinViewModel
 
 @Serializable
 open class Routes {
@@ -58,8 +54,6 @@ open class Routes {
 @Composable
 @Preview
 fun App() {
-    val viewModel: AppViewModel = koinViewModel()
-    val items by viewModel.taskListState.collectAsState()
     val navController = rememberNavController()
     val selectedItem = rememberSaveable { mutableStateOf(Routes.TaskListScreen.toString()) }
 
@@ -101,8 +95,8 @@ fun App() {
             floatingActionButton = {
                 AnimatedVisibility(
                     selectedItem.value == Routes.TaskListScreen.toString(),
-                    enter = slideInHorizontally { it*2 },
-                    exit = slideOutHorizontally { it*2 })
+                    enter = slideInHorizontally { it * 2 },
+                    exit = slideOutHorizontally { it * 2 })
                 {
                     FloatingActionButton(shape = CircleShape, onClick = {
                         navController.navigate(

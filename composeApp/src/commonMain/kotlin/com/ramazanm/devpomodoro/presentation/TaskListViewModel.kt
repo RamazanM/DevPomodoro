@@ -16,15 +16,20 @@ open class TaskListState {
     object Empty : TaskListState()
 }
 
-class AppViewModel(val repository: TaskRepository) : ViewModel() {
+abstract class TaskListViewModel(): ViewModel(){
+    abstract val taskListState: StateFlow<TaskListState>
+    abstract fun loadTasks()
+}
+
+class TaskListViewModelImpl(val repository: TaskRepository) : TaskListViewModel() {
     private val _taskListState = MutableStateFlow<TaskListState>(TaskListState.Loading)
-    val taskListState: StateFlow<TaskListState> = _taskListState
+    override val taskListState: StateFlow<TaskListState> = _taskListState
 
     init {
         loadTasks()
     }
 
-    fun loadTasks() {
+    override fun loadTasks() {
         viewModelScope.launch {
             _taskListState.update { TaskListState.Loading }
             try {

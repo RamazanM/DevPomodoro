@@ -22,6 +22,6 @@ val commonModule = module {
     single { getPomodoroDAO(get()) }
 
     single { RoomTaskRepository(get(), get()) }.bind(TaskRepository::class)
-    viewModel { AppViewModel(get()) }
+    viewModel { TaskListViewModelImpl(get()) }.bind(TaskListViewModel::class)
     viewModel { (handle: SavedStateHandle)-> AddEditTaskViewModelImpl(handle,get()) }.bind(AddEditTaskViewModel::class)
 }
