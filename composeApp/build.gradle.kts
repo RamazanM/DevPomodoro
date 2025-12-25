@@ -72,6 +72,9 @@ kotlin {
             implementation(libs.androidx.navigation.compose)
             implementation(libs.kotlinx.serialization.core)
             implementation(libs.material.icons.extended)
+            implementation(libs.kotlinx.datetime)
+            implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.10.0-RC")
+
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

@@ -15,6 +15,7 @@ junit = "4.13.2"
 koinAndroid = "4.1.1"
 kotlin = "2.3.0"
 kotlinx-coroutines = "1.10.2"
+kotlinxDatetime = "0.7.1"
 materialIconsExtended = "1.7.3"
 room = "2.8.4"
 sqlite = "2.6.2"
@@ -47,6 +48,7 @@ koin-compose-viewmodel = { group = "io.insert-koin", name = "koin-compose-viewmo
 
 androidx-navigation-compose = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "jetbrains-navigation" }
 
+kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
 kotlinx-serialization-core = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref = "kotlinxSerializationCore" }
 
 material-icons-extended = { module = "org.jetbrains.compose.material:material-icons-extended", version.ref = "materialIconsExtended" }

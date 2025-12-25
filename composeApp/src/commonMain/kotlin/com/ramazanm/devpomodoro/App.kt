@@ -31,7 +31,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.ramazanm.devpomodoro.data.dto.TaskDTO
-import com.ramazanm.devpomodoro.presentation.AppViewModel
+import com.ramazanm.devpomodoro.data.dto.taskDTONavTypeMapper
+import com.ramazanm.devpomodoro.presentation.TaskListViewModelImpl
+import com.ramazanm.devpomodoro.ui.AddEditTaskScreen
 import kotlinx.serialization.Serializable
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
@@ -132,6 +134,11 @@ fun App() {
                 }
                 composable<Routes.SettingsScreen> {
                     Text("Settings")
+                }
+                composable<Routes.AddEditTaskScreen>(
+                    typeMap = taskDTONavTypeMapper
+                ) {
+                    AddEditTaskScreen()
                 }
             }
         }

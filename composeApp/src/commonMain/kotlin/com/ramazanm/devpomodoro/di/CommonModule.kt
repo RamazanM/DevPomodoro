@@ -1,11 +1,15 @@
 package com.ramazanm.devpomodoro.di
 
+import androidx.lifecycle.SavedStateHandle
 import com.ramazanm.devpomodoro.data.db.getPomodoroDAO
 import com.ramazanm.devpomodoro.data.db.getRoomDatabase
 import com.ramazanm.devpomodoro.data.db.getTaskDAO
 import com.ramazanm.devpomodoro.data.repository.RoomTaskRepository
 import com.ramazanm.devpomodoro.data.repository.TaskRepository
-import com.ramazanm.devpomodoro.presentation.AppViewModel
+import com.ramazanm.devpomodoro.presentation.AddEditTaskViewModel
+import com.ramazanm.devpomodoro.presentation.AddEditTaskViewModelImpl
+import com.ramazanm.devpomodoro.presentation.TaskListViewModel
+import com.ramazanm.devpomodoro.presentation.TaskListViewModelImpl
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.bind
@@ -19,4 +23,5 @@ val commonModule = module {
 
     single { RoomTaskRepository(get(), get()) }.bind(TaskRepository::class)
     viewModel { AppViewModel(get()) }
+    viewModel { (handle: SavedStateHandle)-> AddEditTaskViewModelImpl(handle,get()) }.bind(AddEditTaskViewModel::class)
 }
