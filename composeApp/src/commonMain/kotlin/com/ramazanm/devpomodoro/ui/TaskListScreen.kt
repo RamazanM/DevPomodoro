@@ -12,11 +12,11 @@ import com.ramazanm.devpomodoro.data.dto.PomodoroStatus
 import com.ramazanm.devpomodoro.data.dto.PomodoroType
 import com.ramazanm.devpomodoro.data.dto.TaskDTO
 import com.ramazanm.devpomodoro.data.dto.TaskSourceType
+import com.ramazanm.devpomodoro.data.dto.TaskStatus
 import com.ramazanm.devpomodoro.data.dto.TaskWithPomodorosDTO
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import kotlin.time.Clock
 import kotlin.time.Duration.Companion.days
-import kotlin.time.Duration.Companion.hours
 import kotlin.time.ExperimentalTime
 
 @Composable
@@ -38,7 +38,7 @@ fun TaskListScreenPreview() {
     val taskList = listOf(
         TaskWithPomodorosDTO(
             TaskDTO(
-                1, "Task 1", "Description 1", "In progress", TaskSourceType.LOCAL,
+                1, "Task 1", "Description 1", TaskStatus.STARTED, TaskSourceType.LOCAL,
                 Clock.System.now().epochSeconds,
                 Clock.System.now().plus(3.days).epochSeconds, 1
             ), listOf(
@@ -48,14 +48,13 @@ fun TaskListScreenPreview() {
                     Clock.System.now().epochSeconds,
                     Clock.System.now().plus(3.days).epochSeconds,
                     PomodoroStatus.STARTED,
-                    3.hours.inWholeMilliseconds,
                     1
                 )
             )
         ),
         TaskWithPomodorosDTO(
             TaskDTO(
-                2, "Task 2", "Description 2", "In progress", TaskSourceType.LOCAL,
+                2, "Task 2", "Description 2", TaskStatus.STARTED, TaskSourceType.LOCAL,
                 Clock.System.now().epochSeconds,
                 Clock.System.now().plus(3.days).epochSeconds, 1
             ), listOf(
@@ -65,7 +64,6 @@ fun TaskListScreenPreview() {
                     Clock.System.now().epochSeconds,
                     Clock.System.now().plus(3.days).epochSeconds,
                     PomodoroStatus.STARTED,
-                    3.hours.inWholeMilliseconds,
                     1
                 )
             )

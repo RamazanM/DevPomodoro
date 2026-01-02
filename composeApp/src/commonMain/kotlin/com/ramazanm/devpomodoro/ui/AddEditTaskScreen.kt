@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.ramazanm.devpomodoro.data.dto.TaskDTO
 import com.ramazanm.devpomodoro.data.dto.TaskSourceType
+import com.ramazanm.devpomodoro.data.dto.TaskStatus
 import com.ramazanm.devpomodoro.presentation.AddEditTaskViewModel
 import com.ramazanm.devpomodoro.presentation.TestAddEditTaskViewModelImpl
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -35,7 +36,6 @@ fun AddEditTaskScreen(viewModel: AddEditTaskViewModel = koinViewModel()) {
         )
         OutlinedTextField(modifier = Modifier.fillMaxWidth(), value = task.title, onValueChange = { task = task.copy(title = it)}, label = { Text("Title") })
         OutlinedTextField(modifier = Modifier.fillMaxWidth(), value = task.description, onValueChange = { task = task.copy(description = it)}, label = { Text("Description")})
-        OutlinedTextField(modifier = Modifier.fillMaxWidth(), value = task.status, onValueChange = { task = task.copy(status = it)}, label = { Text("Status")})
         DatePicker(datePickerState)
     }
 }
@@ -54,7 +54,7 @@ fun EditTaskScreenPreview() {
     val viewModel = TestAddEditTaskViewModelImpl()
     viewModel.isEditing.value = true
     viewModel.task.value = TaskDTO(
-        1, "Task 1", "Description 1", "In progress", TaskSourceType.LOCAL,
+        1, "Task 1", "Description 1", TaskStatus.STARTED, TaskSourceType.LOCAL,
         Clock.System.now().epochSeconds,
         Clock.System.now().epochSeconds, 1
     )
