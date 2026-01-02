@@ -11,10 +11,10 @@ import kotlin.reflect.typeOf
 
 @Serializable
 data class TaskDTO(
-    val id: Int?=null,
+    val id: Long? = 0,
     val title: String = "",
     val description: String = "",
-    val status: String = "",
+    val status: TaskStatus = TaskStatus.NOT_STARTED,
     val source: TaskSourceType = TaskSourceType.LOCAL,
     val startDate: Long = 0L,
     val endDate: Long = 0L,
@@ -32,7 +32,11 @@ data class TaskDTO(
     )
 }
 
-val taskDTONavTypeMapper=mapOf(typeOf<TaskDTO?>() to object : NavType<TaskDTO?>(true) {
+enum class TaskStatus {
+    NOT_STARTED, STARTED, PAUSED, FINISHED, INTERRUPTED
+}
+
+val taskDTONavTypeMapper = mapOf(typeOf<TaskDTO?>() to object : NavType<TaskDTO?>(true) {
     override fun put(
         bundle: SavedState,
         key: String,
