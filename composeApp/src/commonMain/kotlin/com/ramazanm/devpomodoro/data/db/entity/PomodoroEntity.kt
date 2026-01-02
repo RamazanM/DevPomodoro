@@ -8,13 +8,12 @@ import com.ramazanm.devpomodoro.data.dto.PomodoroType
 
 @Entity
 data class PomodoroEntity(
-    @PrimaryKey(autoGenerate = true) val id: Int = 0,
+    @PrimaryKey(autoGenerate = true) val id: Int? = 0,
     val type: PomodoroType,
-    val startTime: Long,
-    val endTime: Long,
+    val startTime: Long?,
+    val endTime: Long?,
     val status: PomodoroStatus,
-    val duration: Long,
-    val taskId: Int
+    val taskId: Long?
 ){
     fun toDTO(): PomodoroDTO = PomodoroDTO(
         id = id,
@@ -22,7 +21,6 @@ data class PomodoroEntity(
         startTime = startTime,
         endTime = endTime,
         status = status,
-        duration = duration,
         taskId = taskId
     )
 }
