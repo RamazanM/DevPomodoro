@@ -53,7 +53,7 @@ kotlin {
             implementation(libs.koin.android)
             implementation(libs.koin.androidx.compose)
             implementation(libs.androidx.room.runtime)
-            implementation("androidx.savedstate:savedstate-compose-android:1.4.0")
+            implementation(libs.androidx.savedstate.compose.android)
 
         }
         commonMain.dependencies {
@@ -73,7 +73,7 @@ kotlin {
             implementation(libs.kotlinx.serialization.core)
             implementation(libs.material.icons.extended)
             implementation(libs.kotlinx.datetime)
-            implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.10.0-RC")
+            implementation(libs.kotlinx.serialization.json)
 
         }
         commonTest.dependencies {
@@ -84,7 +84,7 @@ kotlin {
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinx.coroutinesSwing)
             implementation(libs.androidx.room.runtime)
-            implementation("androidx.savedstate:savedstate-compose-jvmstubs:1.3.1")
+            implementation(libs.androidx.savedstate.compose.jvmstubs)
 
         }
         iosMain.dependencies {
@@ -92,15 +92,18 @@ kotlin {
 
         }
         iosArm64Main.dependencies {
-            implementation("androidx.savedstate:savedstate-compose-iosarm64:1.4.0")
+            implementation(libs.androidx.savedstate.compose.iosarm64)
 
         }
         iosX64Main.dependencies {
-            implementation("androidx.savedstate:savedstate-compose-iosx64:1.4.0")
+            implementation(libs.androidx.savedstate.compose.iosx64)
         }
         iosSimulatorArm64Main.dependencies {
-            implementation("androidx.savedstate:savedstate-compose-iossimulatorarm64:1.4.0")
+            implementation(libs.androidx.savedstate.compose.iossimulatorarm64)
         }
+    }
+    sourceSets.androidInstrumentedTest.dependencies {
+        implementation(kotlin("test"))
     }
 }
 
@@ -114,6 +117,8 @@ android {
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 1
         versionName = "1.0"
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
     }
     packaging {
         resources {
@@ -137,6 +142,12 @@ dependencies {
     add("kspIosSimulatorArm64", libs.androidx.room.compiler)
     add("kspJvm", libs.androidx.room.compiler)
     debugImplementation(compose.uiTooling)
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.junit.v113)
+    androidTestImplementation(libs.androidx.junit.ktx)
+    androidTestImplementation(libs.androidx.espresso.core.v340)
+    androidTestImplementation(libs.kotlinx.coroutines.test)
+
 }
 
 compose.desktop {
