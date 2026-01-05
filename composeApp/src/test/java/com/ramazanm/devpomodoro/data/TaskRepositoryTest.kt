@@ -1,7 +1,7 @@
-import android.content.Context
+package com.ramazanm.devpomodoro.data
+
 import androidx.room.Room
-import androidx.test.core.app.ApplicationProvider
-import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
 import com.ramazanm.devpomodoro.data.db.AppDatabase
 import com.ramazanm.devpomodoro.data.db.dao.PomodoroDAO
 import com.ramazanm.devpomodoro.data.db.dao.TaskDAO
@@ -19,27 +19,31 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.koin.core.context.stopKoin
+import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
 import java.io.IOException
 import kotlin.test.assertFailsWith
 import kotlin.test.assertTrue
 import kotlin.time.Clock
 import kotlin.time.Duration.Companion.minutes
 
-@RunWith(AndroidJUnit4::class)
+@RunWith(RobolectricTestRunner::class)
+@Config(sdk = [34])
 class TaskRepositoryTest {
 
     private lateinit var db: AppDatabase
     private lateinit var taskDao: TaskDAO
     private lateinit var pomodoroDao: PomodoroDAO
-
     private lateinit var repository: TaskRepository
-
 
     @Before
     fun setup() {
         //Instantiate in-memory database for testing
+        val context = InstrumentationRegistry.getInstrumentation().targetContext
+
         db = Room.inMemoryDatabaseBuilder(
-            ApplicationProvider.getApplicationContext<Context>(),
+            context,
             AppDatabase::class.java
         ).build()
         taskDao = db.taskDao()
@@ -50,6 +54,7 @@ class TaskRepositoryTest {
     @After
     @Throws(IOException::class)
     fun closeDb() {
+        stopKoin()
         db.close()
     }
 
