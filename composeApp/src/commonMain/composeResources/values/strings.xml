@@ -1,0 +1,7 @@
+<resources>
+    <string name="save_task_error">Task couldn't be saved!</string>
+    <string name="save_task_success_add">Task added successfully.</string>
+    <string name="save_task_success_update">Task updated successfully.</string>
+    <string name="delete_task_error">Task couldn't be deleted!</string>
+    <string name="delete_task_success">Task deleted successfully!</string>
+</resources>
