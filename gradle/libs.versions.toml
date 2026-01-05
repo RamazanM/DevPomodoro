@@ -20,6 +20,8 @@ kotlin = "2.3.0"
 kotlinx-coroutines = "1.10.2"
 kotlinxDatetime = "0.7.1"
 materialIconsExtended = "1.7.3"
+mockkVersion = "1.14.7"
+robolectric = "4.16"
 room = "2.8.4"
 room-testing = "2.8.4"
 sqlite = "2.6.2"
@@ -64,6 +66,8 @@ kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.
 kotlinx-serialization-core = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref = "kotlinxSerializationCore" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationCore" }
 material-icons-extended = { module = "org.jetbrains.compose.material:material-icons-extended", version.ref = "materialIconsExtended" }
+mockk-mockk = { module = "io.mockk:mockk", version.ref = "mockkVersion" }
+robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
 
 
 [plugins]

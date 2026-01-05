@@ -74,11 +74,13 @@ kotlin {
             implementation(libs.material.icons.extended)
             implementation(libs.kotlinx.datetime)
             implementation(libs.kotlinx.serialization.json)
+            implementation(libs.robolectric)
 
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
             implementation(libs.kotlinx.coroutines.test)
+            implementation(libs.mockk.mockk)
         }
         jvmMain.dependencies {
             implementation(compose.desktop.currentOs)
@@ -130,6 +132,11 @@ android {
             isMinifyEnabled = false
         }
     }
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+        }
+    }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
@@ -143,6 +150,10 @@ dependencies {
     add("kspJvm", libs.androidx.room.compiler)
     debugImplementation(compose.uiTooling)
     testImplementation(libs.junit)
+    testImplementation(libs.mockk.mockk)
+    testImplementation("org.robolectric:robolectric:4.16")
+    //noinspection UseTomlInstead
+    implementation("androidx.navigation:navigation-testing:2.9.6")
     androidTestImplementation(libs.androidx.junit.v113)
     androidTestImplementation(libs.androidx.junit.ktx)
     androidTestImplementation(libs.androidx.espresso.core.v340)
