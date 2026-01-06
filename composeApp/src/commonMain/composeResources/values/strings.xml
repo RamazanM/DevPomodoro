@@ -4,4 +4,5 @@
     <string name="save_task_success_update">Task updated successfully.</string>
     <string name="delete_task_error">Task couldn't be deleted!</string>
     <string name="delete_task_success">Task deleted successfully!</string>
+    <string name="load_tasks_error">An error occurred while loading tasks!</string>
 </resources>
