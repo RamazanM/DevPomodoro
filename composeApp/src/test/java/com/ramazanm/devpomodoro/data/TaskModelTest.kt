@@ -33,7 +33,12 @@ class TaskModelTest {
         assertEquals(TaskStatus.NOT_STARTED, taskEntity.status)
         assertEquals(TaskSourceType.LOCAL, taskEntity.source)
         assertTrue { date <= taskEntity.startDate + 5 && date >= taskEntity.startDate - 5 } //Since it could take some time to create the entity, we allow a 5 second margin of error.
-        assertTrue { date <= taskEntity.endDate + 5 && date >= taskEntity.endDate - 5 } //Since it could take some time to create the entity, we allow a 5 second margin of error.
+        assertTrue {
+            taskEntity.endDate?.let {
+                date <= it + 5 && date >= it - 5
+            } ?: false
+            //Since it could take some time to create the entity, we allow a 5 second margin of error.
+        }
         assertEquals(1, taskEntity.priority)
     }
 

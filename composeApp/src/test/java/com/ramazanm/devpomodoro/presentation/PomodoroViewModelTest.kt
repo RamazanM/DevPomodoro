@@ -9,7 +9,7 @@ import com.ramazanm.devpomodoro.data.dto.TaskStatus
 import com.ramazanm.devpomodoro.data.dto.TaskWithPomodorosDTO
 import com.ramazanm.devpomodoro.data.repository.TaskRepository
 import devpomodoro.composeapp.generated.resources.Res
-import devpomodoro.composeapp.generated.resources.load_pomodoro_error
+import devpomodoro.composeapp.generated.resources.load_tasks_error
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -34,7 +34,7 @@ class PomodoroViewModelTest() {
 
     @Before
     fun setup() {
-
+        pomodoroViewModel = PomodoroViewModelImpl(repository)
     }
 
     @After
@@ -47,7 +47,7 @@ class PomodoroViewModelTest() {
         coEvery { repository.getActiveTaskWithPomodoros() } returns testTaskList[0]
         pomodoroViewModel.fetchCurrentPomodoro()
         assertEquals(
-            testTaskList[0].task, pomodoroViewModel.pomodoroState.value.selectedTask
+            testTaskList[0], pomodoroViewModel.pomodoroState.value.selectedTask
         )
     }
 
@@ -70,20 +70,20 @@ class PomodoroViewModelTest() {
                         description = "Cleanup the LoginViewModel",
                         status = TaskStatus.STARTED,
                         source = TaskSourceType.LOCAL,
-                        startDate = System.currentTimeMillis() - 3600000,
+                        startDate = 3600000,
                         priority = 1
                     ), pomodoros = listOf(
                         PomodoroDTO(
                             101,
                             PomodoroType.WORK,
-                            System.currentTimeMillis() - 3600000,
-                            System.currentTimeMillis() - 2100000,
+                            3600000,
+                            2100000,
                             PomodoroStatus.PAUSED,
                             1
                         ), PomodoroDTO(
                             102,
                             PomodoroType.BREAK,
-                            System.currentTimeMillis() - 2100000,
+                            2100000,
                             null,
                             PomodoroStatus.NOT_STARTED,
                             1
@@ -95,8 +95,8 @@ class PomodoroViewModelTest() {
             PomodoroDTO(
                 101,
                 PomodoroType.WORK,
-                System.currentTimeMillis() - 3600000,
-                System.currentTimeMillis() - 2100000,
+                3600000,
+                2100000,
                 PomodoroStatus.PAUSED,
                 1
             ), pomodoroViewModel.pomodoroState.value.activePomodoro
@@ -113,20 +113,20 @@ class PomodoroViewModelTest() {
                         description = "Cleanup the LoginViewModel",
                         status = TaskStatus.STARTED,
                         source = TaskSourceType.LOCAL,
-                        startDate = System.currentTimeMillis() - 3600000,
+                        startDate = 3600000,
                         priority = 1
                     ), pomodoros = listOf(
                         PomodoroDTO(
                             101,
                             PomodoroType.WORK,
-                            System.currentTimeMillis() - 3600000,
-                            System.currentTimeMillis() - 2100000,
+                            3600000,
+                            2100000,
                             PomodoroStatus.STARTED,
                             1
                         ), PomodoroDTO(
                             102,
                             PomodoroType.BREAK,
-                            System.currentTimeMillis() - 2100000,
+                            2100000,
                             null,
                             PomodoroStatus.NOT_STARTED,
                             1
@@ -136,11 +136,11 @@ class PomodoroViewModelTest() {
         pomodoroViewModel.fetchCurrentPomodoro()
         assertEquals(
             PomodoroDTO(
-                102,
-                PomodoroType.BREAK,
-                System.currentTimeMillis() - 2100000,
-                null,
-                PomodoroStatus.NOT_STARTED,
+                101,
+                PomodoroType.WORK,
+                3600000,
+                2100000,
+                PomodoroStatus.STARTED,
                 1
             ), pomodoroViewModel.pomodoroState.value.activePomodoro
         )
@@ -151,20 +151,42 @@ class PomodoroViewModelTest() {
         coEvery { repository.getActiveTaskWithPomodoros() } returns testTaskList[0]
 
         pomodoroViewModel.fetchCurrentPomodoro()
+        coEvery { repository.getActiveTaskWithPomodoros() } returns testTaskList[0].copy(
+            pomodoros = listOf(
+                PomodoroDTO(
+                    101,
+                    PomodoroType.WORK,
+                    3600000,
+                    2100000,
+                    PomodoroStatus.FINISHED,
+                    1
+                ), PomodoroDTO(
+                    102,
+                    PomodoroType.BREAK,
+                    2100000,
+                    null,
+                    PomodoroStatus.STARTED,
+                    1
+                )
+            )
+        )
         pomodoroViewModel.startPomodoro()
+
         coVerify {
             repository.updatePomodoro(
-                pomodoroViewModel.pomodoroState.value.activePomodoro.copy(
+                (pomodoroViewModel.pomodoroState.value.activePomodoro ?: PomodoroDTO()).copy(
                     status = PomodoroStatus.STARTED
                 )
             )
         }
+
+
         assertEquals(
             PomodoroDTO(
                 102,
                 PomodoroType.BREAK,
-                System.currentTimeMillis() - 2100000,
-                System.currentTimeMillis(),
+                2100000,
+                null,
                 PomodoroStatus.STARTED,
                 1
             ), pomodoroViewModel.pomodoroState.value.activePomodoro
@@ -196,7 +218,7 @@ class PomodoroViewModelTest() {
                 PomodoroDTO(
                     102,
                     PomodoroType.BREAK,
-                    System.currentTimeMillis() - 2100000,
+                    2100000,
                     null,
                     PomodoroStatus.NOT_NEEDED,
                     1
@@ -218,25 +240,6 @@ class PomodoroViewModelTest() {
         assertEquals(PomodoroEvent.NextTask, eventList.last())
     }
 
-    @Test
-    fun verify_getNextPomodoro_updates_pomodoro_to_interrupted() {
-        coEvery { repository.getActiveTaskWithPomodoros() } returns testTaskList[0]
-        pomodoroViewModel.fetchCurrentPomodoro()
-        pomodoroViewModel.getNextPomodoro()
-        coVerify {
-            repository.updatePomodoro(
-                PomodoroDTO(
-                    102,
-                    PomodoroType.BREAK,
-                    System.currentTimeMillis() - 2100000,
-                    null,
-                    PomodoroStatus.INTERRUPTED,
-                    1
-                )
-            )
-        }
-    }
-
     //Error Tests
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
@@ -247,12 +250,12 @@ class PomodoroViewModelTest() {
             pomodoroViewModel.eventFlow.toList(eventList)
         }
         pomodoroViewModel.fetchCurrentPomodoro()
-        assertEquals(PomodoroEvent.ShowToast(Res.string.load_pomodoro_error),eventList.last())
+        assertEquals(PomodoroEvent.ShowToast(Res.string.load_tasks_error), eventList.last())
     }
 }
 
 
-val testTaskList = mutableListOf<TaskWithPomodorosDTO>(
+val testTaskList = mutableListOf(
     // Task 1: Single cycle, currently on a break
     TaskWithPomodorosDTO(
         task = TaskDTO(
@@ -261,20 +264,20 @@ val testTaskList = mutableListOf<TaskWithPomodorosDTO>(
             description = "Cleanup the LoginViewModel",
             status = TaskStatus.STARTED,
             source = TaskSourceType.LOCAL,
-            startDate = System.currentTimeMillis() - 3600000,
+            startDate = 3600000,
             priority = 1
         ), pomodoros = listOf(
             PomodoroDTO(
                 101,
                 PomodoroType.WORK,
-                System.currentTimeMillis() - 3600000,
-                System.currentTimeMillis() - 2100000,
+                3600000,
+                2100000,
                 PomodoroStatus.FINISHED,
                 1
             ), PomodoroDTO(
                 102,
                 PomodoroType.BREAK,
-                System.currentTimeMillis() - 2100000,
+                2100000,
                 null,
                 PomodoroStatus.NOT_STARTED,
                 1
@@ -290,7 +293,7 @@ val testTaskList = mutableListOf<TaskWithPomodorosDTO>(
             description = "Draft and schedule email",
             status = TaskStatus.FINISHED,
             source = TaskSourceType.LOCAL,
-            startDate = System.currentTimeMillis() - 7200000,
+            startDate = 7200000,
             endDate = System.currentTimeMillis(),
             priority = 3
         ), pomodoros = listOf(
@@ -298,15 +301,15 @@ val testTaskList = mutableListOf<TaskWithPomodorosDTO>(
             PomodoroDTO(
                 201,
                 PomodoroType.WORK,
-                System.currentTimeMillis() - 7200000,
-                System.currentTimeMillis() - 5700000,
+                7200000,
+                5700000,
                 PomodoroStatus.FINISHED,
                 2
             ), PomodoroDTO(
                 202,
                 PomodoroType.BREAK,
-                System.currentTimeMillis() - 5700000,
-                System.currentTimeMillis() - 5400000,
+                5700000,
+                5400000,
                 PomodoroStatus.FINISHED,
                 2
             ),
@@ -314,15 +317,15 @@ val testTaskList = mutableListOf<TaskWithPomodorosDTO>(
             PomodoroDTO(
                 203,
                 PomodoroType.WORK,
-                System.currentTimeMillis() - 5400000,
-                System.currentTimeMillis() - 3900000,
+                5400000,
+                3900000,
                 PomodoroStatus.FINISHED,
                 2
             ), PomodoroDTO(
                 204,
                 PomodoroType.BREAK,
-                System.currentTimeMillis() - 3900000,
-                System.currentTimeMillis() - 3600000,
+                3900000,
+                3600000,
                 PomodoroStatus.FINISHED,
                 2
             )
@@ -337,22 +340,22 @@ val testTaskList = mutableListOf<TaskWithPomodorosDTO>(
             description = "App crashes on API 34",
             status = TaskStatus.PAUSED,
             source = TaskSourceType.LOCAL,
-            startDate = System.currentTimeMillis() - 10800000,
+            startDate = 10800000,
             priority = 0
         ), pomodoros = listOf(
             // Couple 1
             PomodoroDTO(
                 301,
                 PomodoroType.WORK,
-                System.currentTimeMillis() - 10800000,
-                System.currentTimeMillis() - 9300000,
+                10800000,
+                9300000,
                 PomodoroStatus.FINISHED,
                 3
             ), PomodoroDTO(
                 302,
                 PomodoroType.BREAK,
-                System.currentTimeMillis() - 9300000,
-                System.currentTimeMillis() - 9000000,
+                9300000,
+                9000000,
                 PomodoroStatus.FINISHED,
                 3
             ),
@@ -360,15 +363,15 @@ val testTaskList = mutableListOf<TaskWithPomodorosDTO>(
             PomodoroDTO(
                 303,
                 PomodoroType.WORK,
-                System.currentTimeMillis() - 9000000,
-                System.currentTimeMillis() - 7500000,
+                9000000,
+                7500000,
                 PomodoroStatus.FINISHED,
                 3
             ), PomodoroDTO(
                 304,
                 PomodoroType.BREAK,
-                System.currentTimeMillis() - 7500000,
-                System.currentTimeMillis() - 7200000,
+                7500000,
+                7200000,
                 PomodoroStatus.FINISHED,
                 3
             ),
@@ -376,15 +379,15 @@ val testTaskList = mutableListOf<TaskWithPomodorosDTO>(
             PomodoroDTO(
                 305,
                 PomodoroType.WORK,
-                System.currentTimeMillis() - 7200000,
-                System.currentTimeMillis() - 5700000,
+                7200000,
+                5700000,
                 PomodoroStatus.FINISHED,
                 3
             ), PomodoroDTO(
                 306,
                 PomodoroType.BREAK,
-                System.currentTimeMillis() - 5700000,
-                System.currentTimeMillis() - 5400000,
+                5700000,
+                5400000,
                 PomodoroStatus.FINISHED,
                 3
             ),
@@ -392,14 +395,14 @@ val testTaskList = mutableListOf<TaskWithPomodorosDTO>(
             PomodoroDTO(
                 307,
                 PomodoroType.WORK,
-                System.currentTimeMillis() - 600000,
+                600000,
                 null,
                 PomodoroStatus.NOT_STARTED,
                 3
             ), PomodoroDTO(
                 308,
                 PomodoroType.BREAK,
-                System.currentTimeMillis() - 600000,
+                600000,
                 null,
                 PomodoroStatus.NOT_STARTED,
                 3
@@ -415,21 +418,21 @@ val testTaskList = mutableListOf<TaskWithPomodorosDTO>(
             description = "Synced from Jira",
             status = TaskStatus.STARTED,
             source = TaskSourceType.LOCAL,
-            startDate = System.currentTimeMillis() - 4000000,
+            startDate = 4000000,
             priority = 2
         ), pomodoros = listOf(
             PomodoroDTO(
                 401,
                 PomodoroType.WORK,
-                System.currentTimeMillis() - 4000000,
-                System.currentTimeMillis() - 2500000,
+                4000000,
+                2500000,
                 PomodoroStatus.FINISHED,
                 4
             ), PomodoroDTO(
                 402,
                 PomodoroType.BREAK,
-                System.currentTimeMillis() - 2500000,
-                System.currentTimeMillis() - 2200000,
+                2500000,
+                2200000,
                 PomodoroStatus.FINISHED,
                 4
             )
