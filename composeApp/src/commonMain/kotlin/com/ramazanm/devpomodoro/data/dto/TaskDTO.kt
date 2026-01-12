@@ -17,7 +17,7 @@ data class TaskDTO(
     val status: TaskStatus = TaskStatus.NOT_STARTED,
     val source: TaskSourceType = TaskSourceType.LOCAL,
     val startDate: Long = 0L,
-    val endDate: Long = 0L,
+    val endDate: Long? = 0L,
     val priority: Int = 0,
 ) {
     fun toEntity(): TaskEntity = TaskEntity(

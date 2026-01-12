@@ -61,7 +61,7 @@ class AddEditTaskViewModelImpl(
     init {
         _state.value =
             AddEditTaskState(
-                task = taskFromRoute?: TaskDTO(), isEditMode = taskFromRoute != null,
+                task = taskFromRoute ?: TaskDTO(), isEditMode = taskFromRoute != null,
                 validationState = ValidationState(),
                 isLoading = false
             )
@@ -101,6 +101,7 @@ class AddEditTaskViewModelImpl(
 
                     else -> null
                 }, endDate = when {
+                    taskDTO.endDate == null -> null
                     taskDTO.endDate.asInstant()
                         .isBefore(Clock.System.now()) -> "End date cannot be before today."
 
