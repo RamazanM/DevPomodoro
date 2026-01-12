@@ -8,6 +8,7 @@ data class PomodoroDTO(
     val startTime: Long? = null,
     val endTime: Long? = null,
     val status: PomodoroStatus = PomodoroStatus.NOT_STARTED,
+    val remainingSeconds: Long? = null,
     val taskId: Long? = -1
 ) {
     fun toEntity(): PomodoroEntity = PomodoroEntity(
