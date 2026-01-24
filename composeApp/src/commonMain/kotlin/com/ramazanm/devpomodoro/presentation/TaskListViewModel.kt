@@ -2,11 +2,10 @@ package com.ramazanm.devpomodoro.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ramazanm.devpomodoro.Routes
 import com.ramazanm.devpomodoro.data.dto.TaskWithPomodorosDTO
 import com.ramazanm.devpomodoro.data.repository.TaskRepository
+import com.ramazanm.devpomodoro.ui.components.Routes
 import devpomodoro.composeapp.generated.resources.Res
-import devpomodoro.composeapp.generated.resources.delete_task_success
 import devpomodoro.composeapp.generated.resources.load_tasks_error
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow

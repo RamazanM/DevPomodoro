@@ -3,10 +3,10 @@ package com.ramazanm.devpomodoro.presentation
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.navigation.toRoute
-import com.ramazanm.devpomodoro.Routes
 import com.ramazanm.devpomodoro.data.dto.TaskDTO
 import com.ramazanm.devpomodoro.data.dto.taskDTONavTypeMapper
 import com.ramazanm.devpomodoro.data.repository.TaskRepository
+import com.ramazanm.devpomodoro.ui.components.Routes
 import devpomodoro.composeapp.generated.resources.Res
 import devpomodoro.composeapp.generated.resources.delete_task_success
 import devpomodoro.composeapp.generated.resources.save_task_success_add

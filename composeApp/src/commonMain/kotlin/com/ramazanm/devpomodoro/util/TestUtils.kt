@@ -15,6 +15,10 @@ object TestTags {
     const val TASK_TITLE = "TaskTitle"
     const val TASK_DESCRIPTION = "TaskDescription"
     const val POMODORO_DETAILS = "PomodoroDetails"
+    const val ADD_TASK_FAB = "AddTaskFab"
+    const val POMODORO_NAVBAR_ITEM = "PomodoroNavBarItem"
+    const val TASK_LIST_NAVBAR_ITEM = "TaskListNavBarItem"
+    const val SETTINGS_NAVBAR_ITEM = "SettingsNavBarItem"
 }
 
 object ContentDescriptions {
