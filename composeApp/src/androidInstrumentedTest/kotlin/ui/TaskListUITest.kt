@@ -8,6 +8,7 @@ import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.onRoot
+import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.printToLog
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.ramazanm.devpomodoro.App
@@ -16,6 +17,7 @@ import com.ramazanm.devpomodoro.data.dto.TaskWithPomodorosDTO
 import com.ramazanm.devpomodoro.data.repository.TaskRepository
 import com.ramazanm.devpomodoro.presentation.TaskListViewModel
 import com.ramazanm.devpomodoro.presentation.TaskListViewModelImpl
+import com.ramazanm.devpomodoro.util.TestTags
 import com.ramazanm.devpomodoro.util.TestTags.TASK_LIST_ITEM
 import io.mockk.coEvery
 import io.mockk.mockk
@@ -110,7 +112,20 @@ class TaskListUITest {
     }
 
     @Test
-    fun verify_add_task_fab_is_visible() {
+    fun verify_add_task_fab_is_visible_on_task_list() {
+        //Arrange
+        updateMockAndInitUI {  }
+        //Assert
+        composeTestRule.onNodeWithTag(TestTags.ADD_TASK_FAB).assertExists()
+    }
+    @Test
+    fun verify_add_task_fab_is_invisible_on_other_pages() {
+        //Arrange
+        updateMockAndInitUI {  }
+        //Act
+        composeTestRule.onNodeWithTag(TestTags.SETTINGS_NAVBAR_ITEM).performClick()
+        //Assert
+        composeTestRule.onNodeWithTag(TestTags.ADD_TASK_FAB).assertDoesNotExist()
 
     }
 
