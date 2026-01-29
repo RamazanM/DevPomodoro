@@ -13,6 +13,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.ramazanm.devpomodoro.data.dto.PomodoroStatus
+import com.ramazanm.devpomodoro.data.dto.TaskStatus
 import com.ramazanm.devpomodoro.data.dto.TaskWithPomodorosDTO
 import com.ramazanm.devpomodoro.presentation.TaskListEvent
 import com.ramazanm.devpomodoro.presentation.TaskListState
@@ -80,7 +82,24 @@ fun TasklistItem(modifier: Modifier = Modifier, taskWithPomodorosDTO: TaskWithPo
         }
         Row(Modifier.testTag(TestTags.POMODORO_DETAILS)) {
             Icon(Icons.Filled.Timer, ContentDescriptions.POMODORO_COUNT)
-            Text("x${taskWithPomodorosDTO.pomodoros.size}")
+            if(taskWithPomodorosDTO.task.status== TaskStatus.STARTED){
+                Row {
+                    for (pomodoro in taskWithPomodorosDTO.pomodoros) {
+                        Icon(Icons.Filled.Timer, contentDescription = when (pomodoro.status) {
+                            PomodoroStatus.STARTED -> ContentDescriptions.POMODORO_STARTED
+                            PomodoroStatus.NOT_STARTED -> ContentDescriptions.POMODORO_NOT_STARTED
+                            PomodoroStatus.FINISHED -> ContentDescriptions.POMODORO_FINISHED
+                            PomodoroStatus.PAUSED -> TODO()
+                            PomodoroStatus.INTERRUPTED -> TODO()
+                            PomodoroStatus.NOT_NEEDED -> TODO()
+                        })
+                    }
+
+                }
+            }
+            else {
+                Text("x${taskWithPomodorosDTO.pomodoros.size}")
+            }
         }
     }
 }

@@ -19,10 +19,15 @@ object TestTags {
     const val POMODORO_NAVBAR_ITEM = "PomodoroNavBarItem"
     const val TASK_LIST_NAVBAR_ITEM = "TaskListNavBarItem"
     const val SETTINGS_NAVBAR_ITEM = "SettingsNavBarItem"
+    const val POMODORO_PROGRESS = "PomodoroProgress"
+
 }
 
 object ContentDescriptions {
     const val POMODORO_COUNT = "Pomodoro Count"
+    const val POMODORO_STARTED = "Pomodoro Started"
+    const val POMODORO_NOT_STARTED = "Pomodoro Not Started"
+    const val POMODORO_FINISHED = "Pomodoro Finished"
 }
 
 val TaskListScreenPreviewTestTasks = listOf(

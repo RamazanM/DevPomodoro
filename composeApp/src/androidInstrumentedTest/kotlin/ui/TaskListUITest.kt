@@ -3,8 +3,14 @@ package com.ramazanm.devpomodoro.ui
 
 import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.assertTextEquals
+import androidx.compose.ui.test.filter
+import androidx.compose.ui.test.filterToOne
+import androidx.compose.ui.test.hasContentDescription
+import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onAllNodesWithTag
+import androidx.compose.ui.test.onChildren
+import androidx.compose.ui.test.onFirst
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.onRoot
@@ -12,11 +18,16 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.printToLog
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.ramazanm.devpomodoro.App
+import com.ramazanm.devpomodoro.data.dto.PomodoroDTO
+import com.ramazanm.devpomodoro.data.dto.PomodoroStatus
+import com.ramazanm.devpomodoro.data.dto.PomodoroType
 import com.ramazanm.devpomodoro.data.dto.TaskDTO
+import com.ramazanm.devpomodoro.data.dto.TaskStatus
 import com.ramazanm.devpomodoro.data.dto.TaskWithPomodorosDTO
 import com.ramazanm.devpomodoro.data.repository.TaskRepository
 import com.ramazanm.devpomodoro.presentation.TaskListViewModel
 import com.ramazanm.devpomodoro.presentation.TaskListViewModelImpl
+import com.ramazanm.devpomodoro.util.ContentDescriptions
 import com.ramazanm.devpomodoro.util.TestTags
 import com.ramazanm.devpomodoro.util.TestTags.TASK_LIST_ITEM
 import io.mockk.coEvery
@@ -48,7 +59,7 @@ class TaskListUITest {
 
     @Test
     fun verify_my_tasks_title_bar_exists() {
-        updateMockAndInitUI{}
+        updateMockAndInitUI {}
         composeTestRule.onRoot().printToLog("1")
         composeTestRule.onNodeWithText("My Tasks").assertExists()
     }
@@ -114,14 +125,15 @@ class TaskListUITest {
     @Test
     fun verify_add_task_fab_is_visible_on_task_list() {
         //Arrange
-        updateMockAndInitUI {  }
+        updateMockAndInitUI { }
         //Assert
         composeTestRule.onNodeWithTag(TestTags.ADD_TASK_FAB).assertExists()
     }
+
     @Test
     fun verify_add_task_fab_is_invisible_on_other_pages() {
         //Arrange
-        updateMockAndInitUI {  }
+        updateMockAndInitUI { }
         //Act
         composeTestRule.onNodeWithTag(TestTags.SETTINGS_NAVBAR_ITEM).performClick()
         //Assert
@@ -131,6 +143,34 @@ class TaskListUITest {
 
     @Test
     fun verify_started_task_shows_pomodoro_progress() {
+        //Arrange
+        updateMockAndInitUI {
+            coEvery { repository.getTasksWithPomodoros() } returns listOf(
+                TaskWithPomodorosDTO(
+                    TaskDTO(1, status = TaskStatus.STARTED), listOf(
+                        PomodoroDTO(type = PomodoroType.WORK, status = PomodoroStatus.STARTED),
+                        PomodoroDTO(type = PomodoroType.BREAK, status = PomodoroStatus.NOT_STARTED),
+                        PomodoroDTO(type = PomodoroType.WORK, status = PomodoroStatus.NOT_STARTED),
+                        PomodoroDTO(type = PomodoroType.BREAK, status = PomodoroStatus.NOT_STARTED),
+                    )
+                ),
+                TaskWithPomodorosDTO(TaskDTO(2), listOf()),
+                TaskWithPomodorosDTO(TaskDTO(3), listOf()),
+                TaskWithPomodorosDTO(TaskDTO(4), listOf()),
+            )
+        }
+        //Assert
+        val pomodoroProgression =
+            composeTestRule.onAllNodesWithTag(TestTags.TASK_LIST_ITEM)[0].onChildren()
+                .filterToOne(hasTestTag(TestTags.POMODORO_PROGRESS))
+
+        pomodoroProgression.assertExists() // Pomodoro progress bar exists
+        pomodoroProgression.onChildren().assertCountEquals(2) // There are 2 Pomodoros in the list
+        pomodoroProgression.onChildren()
+            .filter(hasContentDescription(ContentDescriptions.POMODORO_STARTED))
+            .assertCountEquals(1) // There is only 1 Pomodoro that has been started
+
+
     }
 
     @Test
